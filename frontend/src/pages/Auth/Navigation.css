@@ -1,0 +1,42 @@
+#navigation-container {
+  width: 4.25rem;
+  min-width: 4.25rem;
+  transition: width 0.3s ease-in-out;
+  overflow: hidden;
+}
+
+#navigation-container:hover {
+  width: 15rem;
+}
+
+.nav-item-name {
+  opacity: 0;
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  transform: translateX(-6px);
+  transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out,
+    max-width 0.2s ease-in-out;
+}
+
+#navigation-container:hover .nav-item-name {
+  opacity: 1;
+  max-width: 180px;
+  transform: translateX(0);
+}
+
+.search-input {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
+
+#navigation-container:hover .search-input {
+  display: block;
+  opacity: 1;
+}
+
+#navigation-container:hover .search-icon {
+  display: none;
+  transition: opacity 0.2s ease-in-out;
+}
