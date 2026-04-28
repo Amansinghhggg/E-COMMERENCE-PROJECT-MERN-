@@ -37,7 +37,7 @@ export default function RecommendProducts({ currentProductId }) {
                 />
                 <div className="card-body">
                   <h6 className="card-title mb-2">{item.name}</h6>
-                  <p className="card-text fw-semibold mb-0">₹{item.price}</p>
+                  <p className="card-text fw-semibold mb-0">₹{item.price.toLocaleString()}</p>
                 </div>
               </div>
             </Link>

@@ -1,1 +1,215 @@
-@import "tailwindcss"; 
+@import "tailwindcss";
+
+.product-details-page {
+  position: relative;
+}
+
+.product-details-page::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 280px;
+  background:
+    radial-gradient(circle at top left, rgba(59, 130, 246, 0.16), transparent 42%),
+    radial-gradient(circle at top right, rgba(14, 165, 233, 0.12), transparent 35%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.product-details-page > * {
+  position: relative;
+  z-index: 1;
+}
+
+.product-details-surface,
+.product-details-card,
+.product-details-reviews-card {
+  border-radius: 1.5rem;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  backdrop-filter: blur(8px);
+}
+
+.product-details-surface {
+  max-width: 24rem;
+  border-radius: 1.5rem;
+}
+
+.product-details-alert {
+  border-radius: 1rem;
+}
+
+.product-details-shell {
+  position: relative;
+}
+
+.product-details-gallery {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 250, 252, 0.96));
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 1.75rem;
+  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.08);
+  padding: 1rem;
+}
+
+.product-details-image-wrap {
+  border-radius: 1.25rem;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.02), rgba(14, 165, 233, 0.06));
+}
+
+.product-details-image {
+  display: block;
+  object-fit: cover;
+  aspect-ratio: 1 / 1;
+}
+
+.product-details-badge-row {
+  position: absolute;
+  top: 1.25rem;
+  left: 1.25rem;
+  right: 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  pointer-events: none;
+}
+
+.product-details-summary {
+  min-height: 100%;
+}
+
+.product-details-card {
+  height: 100%;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.06);
+}
+
+.product-details-kicker {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #0f766e;
+}
+
+.product-details-title {
+  font-size: clamp(2rem, 4vw, 3.15rem);
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+  margin: 0;
+}
+
+.product-details-description {
+  color: #475569;
+  font-size: 1.02rem;
+  line-height: 1.75;
+}
+
+.product-details-price-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 1rem;
+  padding: 1rem 1.1rem;
+  border-radius: 1.1rem;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.04), rgba(14, 165, 233, 0.08));
+}
+
+.product-details-price-label {
+  display: block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #64748b;
+  margin-bottom: 0.35rem;
+}
+
+.product-details-price {
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: #0f172a;
+}
+
+.product-details-stock {
+  padding: 0.6rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.product-details-stock.is-in-stock {
+  background: rgba(34, 197, 94, 0.12);
+  color: #166534;
+}
+
+.product-details-stock.is-out-of-stock {
+  background: rgba(239, 68, 68, 0.12);
+  color: #991b1b;
+}
+
+.product-details-select {
+  border-radius: 0.95rem;
+  padding-top: 0.8rem;
+  padding-bottom: 0.8rem;
+}
+
+.product-details-review-panel {
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.product-details-reviews-card {
+  margin-top: 0.25rem;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.05);
+}
+
+.product-details-review-item {
+  padding: 1rem 1.1rem;
+  border-radius: 1rem;
+  background: linear-gradient(180deg, rgba(248, 250, 252, 0.9), rgba(255, 255, 255, 0.96));
+  border: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+@media (min-width: 992px) {
+  .product-details-summary {
+    position: sticky;
+    top: 1.5rem;
+  }
+}
+
+.input {
+  width: 100%;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.899);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.5rem 0.75rem;
+  color: #ffffff;
+  outline: none;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.input::placeholder {
+  color: #9ca3af;
+}
+
+.input:focus {
+  border-color: rgb(56 189 248);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.75rem;
+  color: #9ca3af;
+}
+Link{
+  text-decoration: none;
+}
+a {
+  text-decoration: none;
+}

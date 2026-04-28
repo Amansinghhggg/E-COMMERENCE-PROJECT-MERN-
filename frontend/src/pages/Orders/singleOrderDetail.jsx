@@ -131,13 +131,13 @@ export default function OrderDetail() {
                             {item.name}
                           </Link>
                           <p className="text-sm text-gray-300 mt-1">
-                            Qty: {item.qty} x INR {Number(item.price).toFixed(2)}
+                            Qty: {item.qty} x INR {Number(item.price).toFixed(2).toLocaleString()}
                           </p>
                         </div>
                       </div>
 
                       <p className="font-semibold whitespace-nowrap">
-                        INR {(item.qty * item.price).toFixed(2)}
+                        INR {(item.qty * item.price).toFixed(2).toLocaleString()}
                       </p>
                     </div>
                   ))}
@@ -163,19 +163,19 @@ export default function OrderDetail() {
               <div className="space-y-2 text-sm">
                 <div className="flex items-center justify-between">
                   <span className="text-gray-300">Items</span>
-                  <span>INR {Number(order.itemsPrice).toFixed(2)}</span>
+                  <span>INR {Number(order.itemsPrice).toFixed(2).toLocaleString()}</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-gray-300">Shipping</span>
-                  <span>INR {Number(order.shippingPrice).toFixed(2)}</span>
+                  <span>INR {Number(order.shippingPrice).toFixed(2).toLocaleString()}</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-gray-300">Tax</span>
-                  <span>INR {Number(order.taxPrice).toFixed(2)}</span>
+                  <span>INR {Number(order.taxPrice).toFixed(2).toLocaleString()}</span>
                 </div>
                 <div className="border-t border-white/10 pt-2 mt-2 flex items-center justify-between text-base font-semibold">
                   <span>Total</span>
-                  <span>INR {Number(order.totalPrice).toFixed(2)}</span>
+                  <span>INR {Number(order.totalPrice).toFixed(2).toLocaleString()}</span>
                 </div>
               </div>
 

@@ -127,102 +127,121 @@ const PlaceOrder = () => {
 
   return (
     <>
-      <ProgressSteps step1 step2 step3 />
+  <ProgressSteps step1 step2 step3 />
 
-      <div className="container mx-auto mt-8">
+  <div className="min-h-screen bg-[#0b1220] text-white px-4 py-8">
+    <div className="max-w-7xl mx-auto grid lg:grid-cols-3 gap-8">
+
+      {/* LEFT: ITEMS */}
+      <div className="lg:col-span-2 space-y-4">
+        <h1 className="text-2xl font-semibold mb-4">Review Your Order</h1>
+
         {cart.cartItems.length === 0 ? (
           <Message>Your cart is empty</Message>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse">
-              <thead>
-                <tr>
-                  <td className="px-1 py-2 text-left align-top">Image</td>
-                  <td className="px-1 py-2 text-left">Product</td>
-                  <td className="px-1 py-2 text-left">Quantity</td>
-                  <td className="px-1 py-2 text-left">Price</td>
-                  <td className="px-1 py-2 text-left">Total</td>
-                </tr>
-              </thead>
+          cart.cartItems.map((item) => (
+            <div
+              key={item._id}
+              className="flex items-center gap-4 bg-white/5 border border-white/10 p-4 rounded-xl"
+            >
+              <img
+                src={item.image}
+                alt={item.name}
+                className="w-20 h-20 object-cover rounded-lg"
+              />
 
-              <tbody>
-                {cart.cartItems.map((item, index) => (
-                  <tr key={index}>
-                    <td className="p-2">
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        className="w-16 h-16 object-cover"
-                      />
-                    </td>
+              <div className="flex-1">
+                <Link
+                  to={`/product/${item.product}`}
+                  className="text-white font-medium hover:text-sky-400 no-underline"
+                >
+                  {item.name}
+                </Link>
 
-                    <td className="p-2">
-                      <Link to={`/product/${item.product}`}>{item.name}</Link>
-                    </td>
-                    <td className="p-2">{item.qty}</td>
-                    <td className="p-2">{item.price.toFixed(2)}</td>
-                    <td className="p-2">
-                      ₹ {(item.qty * item.price).toFixed(2)}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                <p className="text-sm text-gray-400">
+                  Qty: {item.qty}
+                </p>
+
+                <p className="text-sm text-gray-400">
+                  ₹ {item.price.toLocaleString("en-IN")}
+                </p>
+              </div>
+
+              <div className="text-sky-400 font-semibold">
+                ₹ {(item.qty * item.price).toLocaleString("en-IN")}
+              </div>
+            </div>
+          ))
         )}
-
-        <div className="mt-8">
-          <h2 className="text-2xl font-semibold mb-5">Order Summary</h2>
-          <div className="flex justify-between flex-wrap p-8 bg-[#181818]">
-            <ul className="text-lg">
-              <li>
-                <span className="font-semibold mb-4">Items:</span> ₹
-                {itemsPrice}
-              </li>
-              <li>
-                <span className="font-semibold mb-4">Shipping:</span> ₹
-                {shippingPrice}
-              </li>
-              <li>
-                <span className="font-semibold mb-4">Tax:</span> ₹
-                {taxPrice}
-              </li>
-              <li>
-                <span className="font-semibold mb-4">Total:</span> ₹
-                {totalPrice}
-              </li>
-            </ul>
-
-            {error && <Message variant="danger">{error.data.message}</Message>}
-
-            <div>
-              <h2 className="text-2xl font-semibold mb-4">Shipping</h2>
-              <p>
-                <strong>Address:</strong> {cart.shippingAddress.address},{" "}
-                {cart.shippingAddress.city} {cart.shippingAddress.postalCode},{" "}
-                {cart.shippingAddress.country}
-              </p>
-            </div>
-
-            <div>
-              <h2 className="text-2xl font-semibold mb-4">Payment Method</h2>
-              <strong>Method:</strong> {cart.paymentMethod}
-            </div>
-          </div>
-
-          <button
-            type="button"
-            className="bg-pink-500 text-white py-2 px-4 rounded-full text-lg w-full mt-4"
-            disabled={cart.cartItems.length === 0 || isLoading || loadingPay}
-            onClick={placeOrderHandler}
-          >
-            Proceed For Payment
-          </button>
-
-          {(isLoading || loadingPay) && <Loader />}
-        </div>
       </div>
-    </>
+
+      {/* RIGHT: SUMMARY */}
+      <div className="bg-white/5 border border-white/10 rounded-xl p-5 h-fit sticky top-24">
+
+        <h2 className="text-lg font-semibold mb-4">
+          Order Summary
+        </h2>
+
+        {/* PRICE DETAILS */}
+        <div className="space-y-2 text-sm text-gray-300 mb-4">
+          <div className="flex justify-between">
+            <span>Items</span>
+            <span>₹ {itemsPrice.toLocaleString("en-IN")}</span>
+          </div>
+          <div className="flex justify-between">
+            <span>Shipping</span>
+            <span>₹ {shippingPrice.toLocaleString("en-IN")}</span>
+          </div>
+          <div className="flex justify-between">
+            <span>Tax</span>
+            <span>₹ {taxPrice.toLocaleString("en-IN")}</span>
+          </div>
+        </div>
+
+        <div className="flex justify-between text-lg font-semibold mb-4">
+          <span>Total</span>
+          <span className="text-sky-400">
+            ₹ {totalPrice.toLocaleString("en-IN")}
+          </span>
+        </div>
+
+        {/* SHIPPING */}
+        <div className="mb-4 text-sm">
+          <h3 className="font-semibold mb-1">Shipping</h3>
+          <p className="text-gray-400">
+            {cart.shippingAddress.address},{" "}
+            {cart.shippingAddress.city},{" "}
+            {cart.shippingAddress.postalCode},{" "}
+            {cart.shippingAddress.country}
+          </p>
+        </div>
+
+        {/* PAYMENT */}
+        <div className="mb-4 text-sm">
+          <h3 className="font-semibold mb-1">Payment</h3>
+          <p className="text-gray-400">
+            {cart.paymentMethod}
+          </p>
+        </div>
+
+        {/* ERROR */}
+        {error && <Message variant="danger">{error.data.message}</Message>}
+
+        {/* BUTTON */}
+        <button
+          onClick={placeOrderHandler}
+          style={{ borderRadius: "9999px" }}
+          disabled={cart.cartItems.length === 0 || isLoading || loadingPay}
+          className="w-full rounded-md py-2 bg-sky-500 text-white font-semibold border border-white/20 rounded-lg hover:bg-sky-200 transition"
+        >
+          Proceed for Payment
+        </button>
+
+        {(isLoading || loadingPay) && <Loader />}
+      </div>
+    </div>
+  </div>
+</>
   );
 };
 

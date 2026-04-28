@@ -1,10 +1,10 @@
-import {useState,useEffect} from "react";
-import {useNavigate,Link,useLocation} from "react-router-dom";
-import {useDispatch,useSelector} from "react-redux";
+import { useState, useEffect } from "react";
+import { useNavigate, Link, useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../components/Loader.jsx";
-import {toast} from "react-toastify";
-import {useRegisterMutation} from "../../redux/api/user.js";
-import {setCredentials} from "../../redux/features/auth/authSlice.js";
+import { toast } from "react-toastify";
+import { useRegisterMutation } from "../../redux/api/user.js";
+import { setCredentials } from "../../redux/features/auth/authSlice.js";
 export default function Register() {
      const [username, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -57,110 +57,108 @@ export default function Register() {
   };
 
     return (
-         <section className="pl-[10rem] flex flex-wrap">
-      <div className="mr-[4rem] mt-[5rem]">
-        <h1 className="text-2xl font-semibold mb-4">Register</h1>
+      <div className="min-h-screen bg-gradient-to-b from-[#0b1220] via-[#0f172a] to-[#111111] px-4 py-10 text-white">
+        <div className="mx-auto flex min-h-[calc(100vh-5rem)] max-w-6xl items-center justify-center">
+          <div className="w-full max-w-lg overflow-hidden rounded-[2rem] bg-white/5 p-6 shadow-2xl backdrop-blur-sm sm:p-8">
+            <div className="mb-6">
+              <p className="text-xs uppercase tracking-[0.3em] text-sky-200/80">Join us</p>
+              <h1 className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">Register</h1>
+              <p className="mt-2 text-sm leading-6 text-gray-300">
+                Create your account and start saving favorites, cart items, and orders.
+              </p>
+            </div>
 
-        <form onSubmit={submitHandler} className="container w-[40rem]">
-          <div className="my-[2rem]">
-            <label
-              htmlFor="name"
-              className="block text-sm font-medium text-white"
-            >
-              Name
-            </label>
-            <input
-              type="text"
-              id="name"
-              className="mt-1 p-2 border rounded w-full"
-              placeholder="Enter name"
-              value={username}
-              onChange={(e) => setName(e.target.value)}
-            />
+            <div className="mb-6 grid grid-cols-2 rounded-full bg-black/20 p-1">
+              <Link
+                to={redirectPath ? `/login?redirect=${encodeURIComponent(redirectPath)}` : "/login"}
+                className="rounded-full px-4 py-2 text-center text-sm font-semibold text-gray-300 transition hover:bg-white/10 hover:text-white"
+              >
+                Login
+              </Link>
+              <Link
+                to={redirectPath ? `/register?redirect=${encodeURIComponent(redirectPath)}` : "/register"}
+                className="rounded-full bg-sky-500 px-4 py-2 text-center text-sm font-semibold text-white transition"
+              >
+                Register
+              </Link>
+            </div>
+
+            <form onSubmit={submitHandler} className="space-y-5">
+              <div>
+                <label htmlFor="name" className="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-gray-400">
+                  Name
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  className="w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none transition placeholder:text-gray-500 focus:border-sky-400 focus:bg-black/30"
+                  placeholder="Enter name"
+                  value={username}
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </div>
+
+              <div>
+                <label htmlFor="email" className="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-gray-400">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  className="w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none transition placeholder:text-gray-500 focus:border-sky-400 focus:bg-black/30"
+                  placeholder="Enter email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+
+              <div className="grid gap-5 sm:grid-cols-2">
+                <div>
+                  <label htmlFor="password" className="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-gray-400">
+                    Password
+                  </label>
+                  <input
+                    type="password"
+                    id="password"
+                    className="w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none transition placeholder:text-gray-500 focus:border-sky-400 focus:bg-black/30"
+                    placeholder="Enter password"
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="confirmPassword" className="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-gray-400">
+                    Confirm Password
+                  </label>
+                  <input
+                    type="password"
+                    id="confirmPassword"
+                    className="w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none transition placeholder:text-gray-500 focus:border-sky-400 focus:bg-black/30"
+                    placeholder="Confirm password"
+                    required
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              <button
+              style={{ borderRadius: "9999px" }}
+                disabled={isLoading}
+                type="submit"
+                className="inline-flex w-full items-center justify-center rounded-2xl bg-sky-500 px-4 py-3 text-sm font-semibold text-white transition hover:bg-sky-400 disabled:cursor-not-allowed disabled:opacity-70"
+              >
+                {isLoading ? "Registering..." : "Register"}
+              </button>
+
+              {isLoading && <Loader />}
+            </form>
+
+  
           </div>
-
-          <div className="my-[2rem]">
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-white"
-            >
-              Email Address
-            </label>
-            <input
-              type="email"
-              id="email"
-              className="mt-1 p-2 border rounded w-full"
-              placeholder="Enter email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-
-          <div className="my-[2rem]">
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-white"
-            >
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              className="mt-1 p-2 border rounded w-full"
-              placeholder="Enter password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-
-          <div className="my-[2rem]">
-            <label
-              htmlFor="confirmPassword"
-
-              className="block text-sm font-medium text-white"
-            >
-              Confirm Password
-            </label>
-            <input
-              type="password"
-              id="confirmPassword"
-              className="mt-1 p-2 border rounded w-full"
-              placeholder="Confirm password"
-                required
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            />
-          </div>
-
-          <button
-            disabled={isLoading}
-            type="submit"
-            className="bg-pink-500 text-white px-4 py-2 rounded cursor-pointer my-[1rem]"
-          >
-            {isLoading ? "Registering..." : "Register"}
-          </button>
-
-          {isLoading && <Loader />}
-        </form>
-
-        <div className="mt-4">
-          <p className="text-white">
-            Already have an account?{" "}
-            <Link
-              to={redirectPath ? `/login?redirect=${encodeURIComponent(redirectPath)}` : "/login"}
-              className="text-pink-500 hover:underline"
-            >
-              Login
-            </Link>
-          </p>
         </div>
       </div>
-      <img
-        src="https://images.unsplash.com/photo-1576502200916-3808e07386a5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2065&q=80"
-        alt=""
-        className="h-[65rem] w-[59%] xl:block md:hidden sm:hidden rounded-lg"
-      />
-    </section>
     );
 }

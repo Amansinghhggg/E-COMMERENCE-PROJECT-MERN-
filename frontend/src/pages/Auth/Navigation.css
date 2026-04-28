@@ -1,28 +1,58 @@
 #navigation-container {
-  width: 4.25rem;
-  min-width: 4.25rem;
-  transition: width 0.3s ease-in-out;
-  overflow: hidden;
+  width: 100%;
 }
 
-#navigation-container:hover {
-  width: 15rem;
+#navigation-container a,
+#navigation-container a:hover,
+#navigation-container a:focus,
+#navigation-container a:visited,
+.home-page a,
+.home-page a:hover,
+.home-page a:focus,
+.home-page a:visited {
+  text-decoration: none !important;
+}
+
+.shop-page a,
+.shop-page a:hover,
+.shop-page a:focus,
+.shop-page a:visited,
+.product-card a,
+.product-card a:hover,
+.product-card a:focus,
+.product-card a:visited {
+  text-decoration: none !important;
 }
 
 .nav-item-name {
-  opacity: 0;
-  max-width: 0;
-  overflow: hidden;
   white-space: nowrap;
-  transform: translateX(-6px);
-  transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out,
-    max-width 0.2s ease-in-out;
 }
 
-#navigation-container:hover .nav-item-name {
-  opacity: 1;
-  max-width: 180px;
-  transform: translateX(0);
+.nav-dropdown-menu {
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+
+.nav-dropdown-section-title {
+  letter-spacing: 0.08em;
+}
+
+.nav-dropdown-item {
+  margin: 0.2rem 0.5rem;
+  border-radius: 0.5rem;
+  color: #e5e7eb;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.nav-dropdown-item:hover {
+  background-color: rgba(59, 130, 246, 0.15);
+  color: #ffffff;
+  transform: translateX(2px);
+}
+
+.nav-dropdown-item-danger:hover {
+  background-color: rgba(244, 63, 94, 0.2);
+  color: #fecdd3;
 }
 
 .search-input {
@@ -31,12 +61,8 @@
   transition: opacity 0.2s ease-in-out;
 }
 
-#navigation-container:hover .search-input {
-  display: block;
-  opacity: 1;
-}
-
-#navigation-container:hover .search-icon {
-  display: none;
-  transition: opacity 0.2s ease-in-out;
+@media (max-width: 768px) {
+  #navigation-container .nav-item-name {
+    font-size: 0.75rem;
+  }
 }

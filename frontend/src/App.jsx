@@ -5,10 +5,9 @@ import Navigation from "./pages/Auth/Navigation.jsx";
 function App() {
 
   return (
-    <>
+    <> <Navigation />
       <ToastContainer />
-      <Navigation />
-       <main className="py-3">
+       <main className="pt-20 pb-3 sm:pt-20">
         <Outlet />
       </main>
     </>

@@ -29,73 +29,91 @@ const Shipping = () => {
     navigate("/placeorder");
   };
 
-  // Payment
-  useEffect(() => {
-    // if (!shippingAddress.address) {
-    //   navigate("/shipping");
-    // }
-  }, [navigate, shippingAddress]);
+  // // Payment
+  // useEffect(() => {
+  //   // if (!shippingAddress.address) {
+  //   //   navigate("/shipping");
+  //   // }
+  // }, [navigate, shippingAddress]);
 
-  return (
-    <div className="container mx-auto mt-10">
-      <ProgressSteps step1 step2 />
-      <div className="mt-[10rem] flex justify-around items-center flex-wrap">
-        <form onSubmit={submitHandler} className="w-[40rem]">
-          <h1 className="text-2xl font-semibold mb-4">Shipping</h1>
-          <div className="mb-4">
-            <label className="block text-white mb-2">Address</label>
+  return (<div className="min-h-screen bg-[#0b1220] text-white px-4 py-10">
+
+  <div className="max-w-xl mx-auto">
+
+    <ProgressSteps step1 step2 />
+
+    <div className="mt-6 bg-[#111827] p-6 rounded-2xl border border-white/10 shadow-lg">
+
+      <h1 className="text-2xl font-semibold mb-1">Shipping Details</h1>
+      <p className="text-sm text-gray-400 mb-5">
+        Enter your delivery information
+      </p>
+
+      <form onSubmit={submitHandler} className="space-y-4">
+
+        <div>
+          <label className="label">Address</label>
+          <input
+            type="text"
+            className="input"
+            placeholder="Street, house no..."
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            required
+          />
+        </div>
+
+        <div className="grid grid-cols-2 gap-3">
+
+          <div>
+            <label className="label">City</label>
             <input
               type="text"
-              className="w-full p-2 border rounded"
-              placeholder="Enter address"
-              value={address}
-              required
-              onChange={(e) => setAddress(e.target.value)}
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-white mb-2">City</label>
-            <input
-              type="text"
-              className="w-full p-2 border rounded"
-              placeholder="Enter city"
+              className="input"
               value={city}
-              required
               onChange={(e) => setCity(e.target.value)}
+              required
             />
           </div>
-          <div className="mb-4">
-            <label className="block text-white mb-2">Postal Code</label>
+
+          <div>
+            <label className="label">Postal Code</label>
             <input
               type="text"
-              className="w-full p-2 border rounded"
-              placeholder="Enter postal code"
+              className="input"
               value={postalCode}
-              required
               onChange={(e) => setPostalCode(e.target.value)}
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-white mb-2">Country</label>
-            <input
-              type="text"
-              className="w-full p-2 border rounded"
-              placeholder="Enter country"
-              value={country}
               required
-              onChange={(e) => setCountry(e.target.value)}
             />
           </div>
-          
-          <button
-            className="bg-pink-500 text-white py-2 px-4 rounded-full text-lg w-full"
-            type="submit"
-          >
-            Continue
-          </button>
-        </form>
-      </div>
+
+        </div>
+
+        <div>
+          <label className="label">Country</label>
+          <input
+            type="text"
+            className="input"
+            value={country}
+            onChange={(e) => setCountry(e.target.value)}
+            required
+          />
+        </div>
+
+        <button
+        style={{ borderRadius: "9999px" }}
+          type="submit"
+          className="w-full py-2.5 mt-2 rounded-xl bg-sky-500 hover:bg-sky-400 transition font-semibold"
+        >
+          Continue to Payment
+        </button>
+
+      </form>
+
     </div>
+
+  </div>
+</div>
   );
 };
 

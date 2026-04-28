@@ -6,7 +6,6 @@ import {
 } from "../../redux/api/productApiSlice";
 import { useGetAllCategoriesQuery } from "../../redux/api/category";
 import { toast } from "react-toastify";
-import AdminMenu from "./adminMenu";
 
 const ProductList = () => {
   const [image, setImage] = useState("");
@@ -67,125 +66,112 @@ const ProductList = () => {
   };
 
   return (
-    <div className="container xl:mx-[9rem] sm:mx-[0]">
-      <div className="flex flex-col md:flex-row">
-        <AdminMenu />
-        <div className="md:w-3/4 p-3">
-          <div className="h-12">Create Product</div>
+  <div className="min-h-screen bg-gradient-to-b from-[#0b1220] via-[#0f172a] to-[#111111] px-4 py-8 text-white">
+  <div className="mx-auto max-w-5xl">
 
-          {imageUrl && (
-            <div className="text-center">
-              <img
-                src={imageUrl}
-                alt="product"
-                className="block mx-auto max-h-[200px]"
-              />
+    <div className="rounded-[2rem] border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur-sm">
+
+      {/* HEADER */}
+      <div className="mb-6">
+        <p className="text-xs uppercase tracking-[0.3em] text-sky-200/80">Admin</p>
+        <h1 className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">Create Product</h1>
+        <p className="mt-2 text-sm text-gray-300">
+          Add a new product to your store
+        </p>
+      </div>
+
+      {/* IMAGE UPLOAD */}
+      <div className="mb-6">
+        <label className="mb-2 block text-sm text-gray-300">
+          Product Image
+        </label>
+
+        <div className="flex items-center gap-4">
+          {imageUrl ? (
+            <img
+              src={imageUrl}
+              className="w-24 h-24 object-cover rounded-lg border border-white/10"
+            />
+          ) : (
+            <div className="w-24 h-24 flex items-center justify-center rounded-lg bg-white/5 border border-white/10 text-gray-400 text-xs">
+              Preview
             </div>
           )}
 
-          <div className="mb-3">
-            <label className="border text-white px-4 block w-full text-center rounded-lg cursor-pointer font-bold py-11">
-              {image ? image.name : "Upload Image"}
-
-              <input
-                type="file"
-                name="image"
-                accept="image/*"
-                onChange={uploadFileHandler}
-                className={!image ? "hidden" : "text-white"}
-              />
-            </label>
-          </div>
-
-          <div className="p-3">
-            <div className="flex flex-wrap">
-              <div className="one">
-                <label htmlFor="name">Name</label> <br />
-                <input
-                  type="text"
-                  className="p-4 mb-3 w-[30rem] border rounded-lg bg-[#101011] text-white"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
-              </div>
-              <div className="two ml-10 ">
-                <label htmlFor="name block">Price</label> <br />
-                <input
-                  type="number"
-                  className="p-4 mb-3 w-[30rem] border rounded-lg bg-[#101011] text-white"
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value)}
-                />
-              </div>
-            </div>
-            <div className="flex flex-wrap">
-              <div className="one">
-                <label htmlFor="name block">Quantity</label> <br />
-                <input
-                  type="number"
-                  className="p-4 mb-3 w-[30rem] border rounded-lg bg-[#101011] text-white"
-                  value={quantity}
-                  onChange={(e) => setQuantity(e.target.value)}
-                />
-              </div>
-              <div className="two ml-10 ">
-                <label htmlFor="name block">Brand</label> <br />
-                <input
-                  type="text"
-                  className="p-4 mb-3 w-[30rem] border rounded-lg bg-[#101011] text-white"
-                  value={brand}
-                  onChange={(e) => setBrand(e.target.value)}
-                />
-              </div>
-            </div>
-
-            <label htmlFor="" className="my-5">
-              Description
-            </label>
-            <textarea
-              type="text"
-              className="p-2 mb-3 bg-[#101011] border rounded-lg w-[95%] text-white"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            ></textarea>
-
-            <div className="flex justify-between">
-              <div>
-                <label htmlFor="name block">Count In Stock</label> <br />
-                <input
-                  type="text"
-                  className="p-4 mb-3 w-[30rem] border rounded-lg bg-[#101011] text-white"
-                  value={stock}
-                  onChange={(e) => setStock(e.target.value)}
-                />
-              </div>
-
-              <div>
-                <label htmlFor="">Category</label> <br />
-                <select
-                  placeholder="Choose Category"
-                  className="p-4 mb-3 w-[30rem] border rounded-lg bg-[#101011] text-white"
-                  onChange={(e) => setCategory(e.target.value)}
-                >
-                  {categories?.map((c) => (
-                    <option key={c._id} value={c._id}>
-                      {c.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            <button
-              onClick={handleSubmit}
-              className="py-4 px-10 mt-5 rounded-lg text-lg font-bold bg-pink-600"
-            >
-              Submit
-            </button>
-          </div>
+          <input
+            type="file"
+            onChange={uploadFileHandler}
+            className="text-sm text-gray-300"
+          />
         </div>
       </div>
+
+      {/* BASIC INFO */}
+      <div className="grid md:grid-cols-2 gap-4">
+
+        <div>
+          <label className="label">Product Name</label>
+          <input className="input" value={name} onChange={(e)=>setName(e.target.value)} />
+        </div>
+
+        <div>
+          <label className="label">Price</label>
+          <input type="number" className="input" value={price} onChange={(e)=>setPrice(e.target.value)} />
+        </div>
+
+        <div>
+          <label className="label">Quantity</label>
+          <input className="input" value={quantity} onChange={(e)=>setQuantity(e.target.value)} />
+        </div>
+
+        <div>
+          <label className="label">Brand</label>
+          <input className="input" value={brand} onChange={(e)=>setBrand(e.target.value)} />
+        </div>
+
+      </div>
+
+      {/* DESCRIPTION */}
+      <div className="mt-5">
+        <label className="label">Description</label>
+        <textarea
+          className="input min-h-[100px]"
+          value={description}
+          onChange={(e)=>setDescription(e.target.value)}
+        />
+      </div>
+
+      {/* STOCK + CATEGORY */}
+      <div className="grid md:grid-cols-2 gap-4 mt-5">
+
+        <div>
+          <label className="label">Stock</label>
+          <input className="input" value={stock} onChange={(e)=>setStock(e.target.value)} />
+        </div>
+
+        <div>
+          <label className="label">Category</label>
+          <select className="input" onChange={(e)=>setCategory(e.target.value)}>
+            <option>Select category</option>
+            {categories?.map((c)=>(
+              <option key={c._id} value={c._id}>{c.name}</option>
+            ))}
+          </select>
+        </div>
+
+      </div>
+
+      {/* BUTTON */}
+      <button
+        onClick={handleSubmit}
+        className="mt-6 w-full rounded-2xl bg-sky-500 py-3 font-semibold transition hover:bg-sky-400"
+      >
+        Create Product
+      </button>
+
     </div>
+  </div>
+</div>
   );
 };
 

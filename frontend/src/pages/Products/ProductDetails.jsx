@@ -1,52 +1,26 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { useGetProductDetailsQuery ,useCreateReviewMutation} from "../../redux/api/productApiSlice";
+import { useGetProductDetailsQuery } from "../../redux/api/productApiSlice";
 import Ratings from "./ratingsStar";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import HeartIcon from "./Heart";
-import {toast} from "react-toastify"
 import RecommendProducts from "./recommendProducts";
 import PostReview from "./postReview";
-import {addToCart} from "../../redux/features/Cart/cartSlice"
-import { useDispatch } from "react-redux";
+import { addToCart } from "../../redux/features/Cart/cartSlice";
+
 export default function ProductDetails() {
   const { id } = useParams();
   const { data: product, error, isLoading } = useGetProductDetailsQuery(id);
-  const [createReview] = useCreateReviewMutation();
   const [qty, setQty] = useState(1);
-  const [rating, setRating] = useState(0);
-  
-  const [comment, setComment] = useState("");
   const userInfo = useSelector((state) => state.auth.userInfo);
-const dispatch = useDispatch();
- const cart = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
+  const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
-
-
-  function handleAddReview() {
-    if (rating === 0 || comment.trim() === "") {
-      toast.error("Please provide a rating and comment for your review.");
-      return;
-    }
-     createReview({ productId: id, rating, comment })
-      .unwrap()
-      .then(() => {
-        toast.success("Review added successfully!");
-        setRating(0);
-        setComment("");
-        setWriteReview(false);
-      })
-      .catch((err) => {
-        toast.error(
-          err.data 
-        );
-      });
-  }
 
   if (isLoading) {
     return (
-      <div className="container py-5 d-flex justify-content-center align-items-center">
-        <div className="text-center p-4 border rounded-4 shadow-sm bg-white">
+      <div className="product-details-page container py-5 d-flex justify-content-center align-items-center">
+        <div className="product-details-surface text-center p-4 shadow-sm bg-white">
           <div
             className="spinner-border text-primary mb-3"
             role="status"
@@ -60,12 +34,9 @@ const dispatch = useDispatch();
 
   if (error) {
     return (
-      <div className="container py-5">
-        <div className="alert alert-danger mb-0" role="alert">
-          Error:{" "}
-          {error?.data?.message ||
-            error?.message ||
-            "Unable to load product details."}
+      <div className="product-details-page container py-5">
+        <div className="alert alert-danger mb-0 product-details-alert" role="alert">
+          Error: {error?.data?.message || error?.message || "Unable to load product details."}
         </div>
       </div>
     );
@@ -77,104 +48,156 @@ const dispatch = useDispatch();
 
   const isInStock = product.countInStock > 0;
   const reviewCount = product.reviews?.length || 0;
+  const priceValue = Number(product.price || 0).toLocaleString("en-IN");
 
-  return (
-    <div className="container py-5">
-      <div className="row g-4 align-items-start">
-        <div className="col-md-6">
-          <div className="position-relative border rounded-4 shadow-sm overflow-hidden bg-white p-3">
-            <img
-              src={product.image}
-              alt={product.name}
-              className="img-fluid rounded-3 w-100"
-            />
-            <HeartIcon product={product} />
-          </div>
-        </div>
-        <div className="col-md-6">
-          <div className="d-flex flex-column gap-3">
-            <div>
-              <h2 className="mb-2">{product.name}</h2>
-                  <Ratings
-                    value={product.rating}
-                    text={`${product.numReviews} reviews`}
-                  />
-            </div>
+  return (<div className="min-h-screen bg-[#0b1220] text-white px-4 py-10">
+  <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-10">
 
-            <p className="text-muted mb-0">{product.description}</p>
+    {/* LEFT: IMAGE */}
+    <div className="relative">
+      <div className="bg-[#111827] rounded-2xl border border-white/10 p-4">
+        <img
+          src={product.image}
+          alt={product.name}
+          className="w-full h-[400px] object-cover rounded-xl"
+        />
+      </div>
 
-            <div className="d-flex align-items-center gap-3 flex-wrap">
-              <h4 className="mb-0">₹{product.price}</h4>
-              <span
-                className={`badge ${isInStock ? "bg-success" : "bg-danger"}`}
-              >
-                {isInStock ? "In Stock" : "Out of Stock"}
-              </span>
-            </div>
+      <div className="absolute top-4 left-4 flex gap-2">
+        <span className={`px-3 py-1 text-xs rounded-full ${
+          isInStock
+            ? "bg-emerald-500/20 text-emerald-300"
+            : "bg-red-500/20 text-red-300"
+        }`}>
+          {isInStock ? "In Stock" : "Out of Stock"}
+        </span>
 
-            {isInStock && (
-              <div>
-                <label htmlFor="qty" className="form-label fw-semibold">
-                  Quantity
-                </label>
-                <select
-                  id="qty"
-                  value={qty}
-                  onChange={(e) => setQty(Number(e.target.value))}
-                  className="form-select w-auto"
-                >
-                  {[...Array(product.countInStock).keys()].map((x) => (
-                    <option key={x + 1} value={x + 1}>
-                      {x + 1}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            )}
+        <span className="px-3 py-1 text-xs rounded-full bg-white/10 text-gray-300">
+          {reviewCount} reviews
+        </span>
+      </div>
 
-            <div className="d-flex gap-2 flex-wrap">
-              {cartItems.some((item) => item._id === product._id) ? (
-                <button className="btn btn-secondary" disabled>
-                  Added to Cart
-                </button>
-              ) : (
-                <button className="btn btn-primary" disabled={!isInStock} onClick={() => dispatch(addToCart({ ...product, qty }))}>
-                  Add to Cart
-                </button>
-              )}
-            </div>
-            {userInfo?(
-              <PostReview/>):(
-                <p className="text-muted mb-0">Please log in to write a review.</p>
-              )
-            }
-
-            
-          </div>
-        </div>
-        <div className="border-top pt-3">
-              <h5 className="mb-3">Reviews ({reviewCount})</h5>
-              {reviewCount === 0 ? (
-                <p className="text-muted mb-0">No reviews yet.</p>
-              ) : (
-                <ul className="list-unstyled mb-0 d-grid gap-3">
-                  {product.reviews.map((review) => (
-                    <li
-                      key={review._id}
-                      className="border rounded-3 p-3 bg-white"
-                    >
-                      <div className="d-flex justify-content-between gap-3 flex-wrap">
-                        <strong>{review.name}</strong>
-                        <Ratings value={review.rating} />
-                      </div>
-                      <p className="mb-0 mt-2 text-muted">{review.comment}</p>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-      </div>    
-      <RecommendProducts currentProductId={product._id} />
+      <HeartIcon product={product} />
     </div>
+
+    {/* RIGHT: DETAILS */}
+    <div className="bg-[#111827] p-6 rounded-2xl border border-white/10 flex flex-col gap-5">
+
+      <div>
+        <h1 className="text-2xl font-semibold">{product.name}</h1>
+        <Ratings value={product.rating} text={`${reviewCount} reviews`} />
+      </div>
+
+      <p className="text-gray-400 text-sm leading-6">
+        {product.description}
+      </p>
+
+      {/* PRICE */}
+      <div className="flex justify-between items-center">
+        <div>
+          <p className="text-xs text-gray-400">Price</p>
+          <p className="text-2xl font-bold text-sky-400">
+            ₹ {priceValue}
+          </p>
+        </div>
+
+        <span className="text-sm text-gray-300">
+          {isInStock ? "Ready to ship" : "Unavailable"}
+        </span>
+      </div>
+
+      {/* QUANTITY */}
+      {isInStock && (
+        <div>
+          <p className="text-sm mb-2 text-gray-300">Quantity</p>
+
+          <div className="flex items-center border border-white/10 rounded-lg overflow-hidden w-fit">
+
+            <button
+              onClick={() => qty > 1 && setQty(qty - 1)}
+              className="px-3 py-1 bg-white/5 hover:bg-white/10"
+            >
+              -
+            </button>
+
+            <span className="px-4">{qty}</span>
+
+            <button
+              onClick={() =>
+                qty < product.countInStock && setQty(qty + 1)
+              }
+              className="px-3 py-1 bg-white/5 hover:bg-white/10"
+            >
+              +
+            </button>
+
+          </div>
+        </div>
+      )}
+
+      {/* BUTTON */}
+      {cartItems.some((item) => item._id === product._id) ? (
+        <button  style={{ borderRadius: "9999px" }} className="w-full py-2 rounded-xl bg-white/10 text-gray-300">
+          Already in Cart
+        </button>
+      ) : (
+        <button
+          disabled={!isInStock}
+          style={{ borderRadius: "9999px" }}
+          onClick={() => dispatch(addToCart({ ...product, qty }))}
+          className="w-full py-2 rounded-xl bg-sky-500 hover:bg-sky-400 transition font-semibold"
+        >
+          Add to Cart
+        </button>
+      )}
+
+      {/* REVIEW */}
+      <div className="border-t border-white/10 pt-4">
+        {userInfo ? (
+          <PostReview />
+        ) : (
+          <p className="text-gray-400 text-sm">
+            Login to write a review
+          </p>
+        )}
+      </div>
+
+    </div>
+  </div>
+
+  {/* REVIEWS */}
+  <div className="max-w-6xl mx-auto mt-10 bg-[#111827] p-6 rounded-2xl border border-white/10">
+
+    <h2 className="text-lg font-semibold mb-4">
+      Reviews ({reviewCount})
+    </h2>
+
+    {reviewCount === 0 ? (
+      <p className="text-gray-400">No reviews yet</p>
+    ) : (
+      <div className="space-y-4">
+        {product.reviews.map((review) => (
+          <div
+            key={review._id}
+            className="border border-white/10 p-4 rounded-xl"
+          >
+            <div className="flex justify-between">
+              <strong>{review.name}</strong>
+              <Ratings value={review.rating} />
+            </div>
+            <p className="text-gray-400 text-sm mt-2">
+              {review.comment}
+            </p>
+          </div>
+        ))}
+      </div>
+    )}
+  </div>
+
+  {/* RECOMMENDED */}
+  <div className="max-w-6xl mx-auto mt-10">
+    <RecommendProducts currentProductId={product._id} />
+  </div>
+</div>
   );
 }
